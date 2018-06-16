@@ -13,28 +13,32 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class CircleProgressBar
+public class MyTimer
   extends JPanel
 {
+  /*
   private static final int MAX_DRAW_PROGRESS = 100;
   private static final int FRACTION_OF_OUTER_RING = 5;
-  private int progress = 0;
   protected int strokeSize = 1;
   protected Color shadowColor = Color.black;
   protected boolean shady = false;
   protected boolean highQuality = true;
   protected Dimension arcs = new Dimension(180, 180);
+  */
   protected JLabel jlabel6;
+  private int progress = 0;
   
-  public CircleProgressBar(JLabel jlabel6)
+  
+  public MyTimer(JLabel jlabel6)
   {
     this.jlabel6 = jlabel6;
-    setOpaque(false);
+    //setOpaque(false);
     
-    setLayout(new BorderLayout());
-    add(jlabel6, "Center");
+    super.setLayout(new BorderLayout());
+    super.add(jlabel6, "Center");
   }
   
+  /*
   protected void paintComponent(Graphics g)
   {
     Graphics2D g2 = (Graphics2D)g;
@@ -76,11 +80,12 @@ public class CircleProgressBar
   {
     return new Dimension(50, 50);
   }
+  */
   
   public void setProgress(int progress)
   {
     this.progress = progress;
-    repaint();
+    //repaint();
   }
   
   public int getProgress()
@@ -95,11 +100,11 @@ public class CircleProgressBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        CircleProgressBar.this.setProgress(CircleProgressBar.this.progress + 1);
-        if (CircleProgressBar.this.progress >= 99)
+        MyTimer.this.setProgress(progress + 1);
+        if (MyTimer.this.progress >= 99)
         {
           timer.stop();
-          CircleProgressBar.this.progress = 0;
+          MyTimer.this.progress = 0;
         }
       }
     });

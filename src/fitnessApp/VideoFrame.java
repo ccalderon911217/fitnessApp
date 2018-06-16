@@ -31,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.ImageIcon;
@@ -84,11 +83,12 @@ public class VideoFrame
   private URL MANURL;
   private URL LOGOURL;
   private URL FONTURL;
-  private CircleProgressBar circleBar;
+  private MyTimer circleBar;
   private JLabel jLabel1;
   private JLabel jLabel2;
   private JLabel jLabel3;
   private JLabel jLabel4;
+  private JLabel seconds;
   private JLabel jLabelInclineValue;
   private JLabel jLabelJoggerValue;
   private JLabel jLabelRunnerValue;
@@ -103,12 +103,14 @@ public class VideoFrame
   private JPanel jPanelJogger;
   private JPanel jPanelRunner;
   private JPanel jPanelWalker;
-  private JPanel timer;
+  
   private JProgressBar jProgressBarTotal;
   private JSeparator jSeparatorIncline;
   private JSeparator jSeparatorJogger;
   private JSeparator jSeparatorRunner;
   private JSeparator jSeparatorWalker;
+  private JSeparator jSeparatorTimer;
+  
   
   public VideoFrame()
     throws FontFormatException
@@ -207,14 +209,44 @@ public class VideoFrame
     this.jProgressBarTotal = new JProgressBar();
     
     this.jLabelCountdownValue = new JLabel();
-    this.jLabelCountdownValue.setForeground(Color.WHITE);
+    this.jLabelCountdownValue.setForeground(Color.RED);
     this.jLabelCountdownValue.setFont(font);
+    this.jLabelCountdownValue.setBorder(new EmptyBorder(0, 20, 20, 20));
     this.jMenuItemPlayVideo.setEnabled(false);
     setDefaultCloseOperation(3);
     
     this.jLabel1.setText("INCLINE");
     
     this.jLabelInclineValue.setText("jLabel2");
+    
+    //formatting the new timer
+    this.circleBar = new MyTimer(getjLabelCountdownValue());
+    
+    this.jSeparatorTimer = new JSeparator();
+    this.seconds=new JLabel("Seconds");
+    this.seconds.setForeground(Color.RED);
+    this.seconds.setFont(new Font("Helvetica", 1, this.FONTSIZE));
+    GroupLayout jPanelTimerLayout = new GroupLayout(this.circleBar);
+    this.circleBar.setLayout(jPanelTimerLayout);
+    jPanelTimerLayout.setHorizontalGroup(jPanelTimerLayout
+      .createParallelGroup(GroupLayout.Alignment.LEADING)
+      .addGroup(jPanelTimerLayout.createSequentialGroup()
+      .addGap(28, 28, 28)
+      .addGroup(jPanelTimerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+      .addComponent(this.jLabelCountdownValue)
+      .addComponent(this.seconds))
+      .addContainerGap(27, 32767))
+      .addComponent(this.jSeparatorTimer));
+    
+    jPanelTimerLayout.setVerticalGroup(jPanelTimerLayout
+      .createParallelGroup(GroupLayout.Alignment.LEADING)
+      .addGroup(jPanelTimerLayout.createSequentialGroup()
+      .addComponent(this.seconds)
+      .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+      .addComponent(this.jSeparatorTimer, -2, 10, -2)
+      .addGap(10, 10, 10)
+      .addComponent(this.jLabelCountdownValue)
+      .addGap(0, 44, 32767)));
     
     GroupLayout jPanelInclineLayout = new GroupLayout(this.jPanelIncline);
     this.jPanelIncline.setLayout(jPanelInclineLayout);
@@ -381,9 +413,6 @@ public class VideoFrame
     
     this.jLabelGoal = new JLabel(icon);
     
-    this.circleBar = new CircleProgressBar(getjLabelCountdownValue());
-    this.circleBar.setPreferredSize(new Dimension(180, 180));
-    
     GridBagLayout videoLayout = new GridBagLayout();
     
     this.videoSurface.setLayout(videoLayout);
@@ -504,6 +533,9 @@ public class VideoFrame
     this.videoSurface.add(this.firstScreen, c);
     this.firstScreen.setVisible(true);
     
+    this.circleBar.setBackground(new Color(0, 0, 0, 125));
+    this.circleBar.setBorder(new LineBorder(Color.RED, 2, false));
+    
     this.jPanelContainer.setVisible(true);
     
     this.jPanelContainer.setOpaque(false);
@@ -523,6 +555,7 @@ public class VideoFrame
     this.jProgressBarTotal.setVisible(false);
     this.jLabelGoal.setVisible(false);
     this.circleBar.setVisible(false);
+    
     
     pack();
   }
@@ -776,6 +809,7 @@ public class VideoFrame
       //this.jLabelGoal.setVisible(true);
       this.jLabelLogo.setVisible(true);
       this.circleBar.setVisible(true);
+      this.setVisible(true);
       
       GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
       
@@ -848,9 +882,9 @@ public class VideoFrame
     this.jLabelJoggerValue.setText(tm.getValueAt(0, 3).toString());
     this.jLabelWalkerValue.setText(tm.getValueAt(0, 2).toString());
     this.jLabelRunnerValue.setText(tm.getValueAt(0, 4).toString());
-    int totalWaiting = Integer.valueOf(tm.getValueAt(0, 0).toString()).intValue() * 1000;
+    int totalWaiting = Integer.valueOf(tm.getValueAt(0, 0).toString()) * 1000;
     
-    this.circleBar.incrementOverTime(Integer.valueOf(tm.getValueAt(0, 0).toString()).intValue() * 10, 0);
+    this.circleBar.incrementOverTime(Integer.valueOf(tm.getValueAt(0, 0).toString()) * 10, 0);
     for (int i = 1; i < this.jDialoogSchedule.getjTable1().getModel().getRowCount(); i++) {
       if (tm.getValueAt(i, 0) != null)
       {
