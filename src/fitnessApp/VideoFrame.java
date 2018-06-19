@@ -1,14 +1,10 @@
 package fitnessApp;
 
-import com.sun.jna.NativeLibrary;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.DisplayMode;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
@@ -17,22 +13,13 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.net.URI;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.ParallelGroup;
-import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -43,9 +30,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
-import javax.swing.JTable;
 import javax.swing.LayoutStyle;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -61,7 +46,6 @@ import uk.co.caprica.vlcj.player.direct.DirectMediaPlayer;
 import uk.co.caprica.vlcj.player.direct.RenderCallback;
 import uk.co.caprica.vlcj.player.direct.RenderCallbackAdapter;
 import uk.co.caprica.vlcj.player.direct.format.RV32BufferFormat;
-import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 public class VideoFrame
   extends JFrame
@@ -110,6 +94,10 @@ public class VideoFrame
   private JSeparator jSeparatorRunner;
   private JSeparator jSeparatorWalker;
   private JSeparator jSeparatorTimer;
+  
+  private JSeparator jSeparatorDistanceGoal;
+  private JLabel distanceGoal;
+  private JLabel jLabelDistanceGoalValue;
   
   
   public VideoFrame()
@@ -200,6 +188,15 @@ public class VideoFrame
     this.jLabelWalkerValue.setFont(font);
     this.jLabelWalkerValue.setBorder(new EmptyBorder(0, 20, 20, 20));
     this.jSeparatorWalker = new JSeparator();
+    //NUEVO
+    this.distanceGoal = new JLabel();
+    this.distanceGoal.setForeground(Color.RED);
+    this.distanceGoal.setFont(new Font("Helvetica", 1, this.FONTSIZE));
+    
+    this.jLabelDistanceGoalValue = new JLabel();
+    this.jLabelDistanceGoalValue.setFont(font);
+    this.jLabelDistanceGoalValue.setBorder(new EmptyBorder(0, 20, 20, 20));
+    this.jSeparatorDistanceGoal = new JSeparator();
     
     this.jMenuBar1 = new JMenuBar();
     this.jMenu1 = new JMenu();
@@ -322,9 +319,12 @@ public class VideoFrame
       .addComponent(this.jLabelJoggerValue)
       .addGap(0, 42, 32767)));
     
-    this.jLabel2.setText("Option 1");
+    this.jLabel2.setText("Speed 1");
     
     this.jLabelWalkerValue.setText("jLabel2");
+    //NUEVO
+    this.distanceGoal.setText("Distance Goal");
+    this.jLabelDistanceGoalValue.setText("El Preso");
     
     GroupLayout jPanelWalkerLayout = new GroupLayout(this.jPanelWalker);
     this.jPanelWalker.setLayout(jPanelWalkerLayout);
@@ -334,9 +334,12 @@ public class VideoFrame
       .addGap(28, 28, 28)
       .addGroup(jPanelWalkerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
       .addComponent(this.jLabelWalkerValue)
-      .addComponent(this.jLabel2))
+      .addComponent(this.jLabel2)
+      .addComponent(this.distanceGoal)
+      .addComponent(this.jLabelDistanceGoalValue))
       .addContainerGap(27, 32767))
-      .addComponent(this.jSeparatorWalker));
+      .addComponent(this.jSeparatorWalker)
+      .addComponent(this.jSeparatorDistanceGoal));
     
     jPanelWalkerLayout.setVerticalGroup(jPanelWalkerLayout
       .createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -346,7 +349,12 @@ public class VideoFrame
       .addComponent(this.jSeparatorWalker, -2, 10, -2)
       .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
       .addComponent(this.jLabelWalkerValue)
-      .addGap(0, 42, 32767)));
+      .addGap(0, 42, 32767)
+      .addComponent(jSeparatorDistanceGoal,-2,10,-2)
+      .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+      .addComponent(this.distanceGoal)
+      .addGap(4, 4, 4)
+      .addComponent(this.jLabelDistanceGoalValue)));
     
     GroupLayout jPanelContainerLayout = new GroupLayout(this.jPanelContainer);
     this.jPanelContainer.setLayout(jPanelContainerLayout);
@@ -559,6 +567,30 @@ public class VideoFrame
     
     pack();
   }
+
+    public JSeparator getjSeparatorDistanceGoal() {
+        return jSeparatorDistanceGoal;
+    }
+
+    public void setjSeparatorDistanceGoal(JSeparator jSeparatorDistanceGoal) {
+        this.jSeparatorDistanceGoal = jSeparatorDistanceGoal;
+    }
+
+    public JLabel getDistanceGoal() {
+        return distanceGoal;
+    }
+
+    public void setDistanceGoal(JLabel distanceGoal) {
+        this.distanceGoal = distanceGoal;
+    }
+
+    public JLabel getjLabelDistanceGoalValue() {
+        return jLabelDistanceGoalValue;
+    }
+
+    public void setjLabelDistanceGoalValue(JLabel jLabelDistanceGoalValue) {
+        this.jLabelDistanceGoalValue = jLabelDistanceGoalValue;
+    }
   
   private void initComponents()
   {
@@ -644,7 +676,8 @@ public class VideoFrame
       .addComponent(this.jLabelRunnerValue)
       .addGap(0, 42, 32767)));
     
-    this.jPanelWalker.setPreferredSize(new Dimension(100, 100));
+    //NUEVO
+    this.jPanelWalker.setPreferredSize(new Dimension(200, 100));
     
     this.jLabel2.setText("Walker");
     

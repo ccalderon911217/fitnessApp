@@ -35,7 +35,7 @@ public class MyTimer
     //setOpaque(false);
     
     super.setLayout(new BorderLayout());
-    super.add(jlabel6, "Center");
+    super.add(jlabel6, "East");
   }
   
   /*
@@ -101,11 +101,11 @@ public class MyTimer
       public void actionPerformed(ActionEvent e)
       {
         MyTimer.this.setProgress(progress + 1);
-        if (MyTimer.this.progress >= 99)
-        {
-          timer.stop();
-          MyTimer.this.progress = 0;
-        }
+//        if (MyTimer.this.progress >= 99)
+//        {
+//          timer.stop();
+//          MyTimer.this.progress = 0;
+//        }
       }
     });
     timer.setInitialDelay(delay);
